@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const path = require('path');
 
 const { getListingId } = require('./getListingId');
-const { getImages } = require('./getImages');
+const { downloadImages } = require('./getImages');
 
 // CONSTANTS
 const LISTINGS_DIRECTORY = './listings';
@@ -30,29 +30,9 @@ async function start(url) {
       .contents()
       .text();
 
-    const images = getImages(applicationJsonScriptTag);
-
-    await fetch(images[0].url).then(res => {
-      return new Promise((resolve, reject) => {
-        const imagePath = path.resolve(
-          LISTINGS_DIRECTORY,
-          listingId,
-          images[0].name
-        );
-
-        const dest = fs.createWriteStream(imagePath);
-
-        res.body.pipe(dest);
-        res.body.on('error', err => {
-          reject(err);
-        });
-        dest.on('finish', () => {
-          resolve();
-        });
-        dest.on('error', err => {
-          reject(err);
-        });
-      });
+    await downloadImages(applicationJsonScriptTag, {
+      directory: LISTINGS_DIRECTORY,
+      listingId
     });
   } catch (error) {
     console.log(error);
