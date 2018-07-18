@@ -41,6 +41,11 @@ async function downloadImages(
 
   return Promise.all(imagePromises);
 }
+function getImageNames(applicationJsonScriptTag) {
+  return getImages(applicationJsonScriptTag).map(imageObject => {
+    return imageObject.name;
+  });
+}
 
 function getImageUrls(applicationJsonScriptTag) {
   const regExp = /"contentUrl": "(.+)"/gi;
@@ -66,6 +71,7 @@ function getImages(applicationJsonScriptTag) {
 
 module.exports = {
   downloadImages,
+  getImageNames,
   getImageUrls,
   getImages
 };

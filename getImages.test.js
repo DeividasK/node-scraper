@@ -1,5 +1,16 @@
 const APPLICATION_JSON_SCRIPT_TAG = require('./mocks/application-json-script-tag');
-const { getImages, getImageUrls } = require('./getImages');
+
+const { getImageNames, getImages, getImageUrls } = require('./getImages');
+
+describe('getImageNames', () => {
+  test('returns a list of property image urls', () => {
+    expect(getImageNames(APPLICATION_JSON_SCRIPT_TAG)).toMatchObject([
+      '1-197dc390bc20c1f7a5c1135232f0afe36c7a17a5.png',
+      '2-fcaa36eac303ea19f74c93e3eaa2f3f0d105bafc.png',
+      '3-28d69406992adf99566d79b341ea2f385d2a0964.jpg'
+    ]);
+  });
+});
 
 describe('getImageUrls', () => {
   test('returns a list of property image urls', () => {
