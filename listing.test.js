@@ -1,4 +1,5 @@
-const KEY_FEATURES_ = require('./mocks/terraced-key-features-property.js');
+const DEFAULT_PROPERTY_HTML = require('./mocks/zoopla-property-page.js');
+const KEY_FEATURES_PROPERTY_HTML = require('./mocks/terraced-key-features-property.js');
 const APPLICATION_JSON_SCRIPT_TAG = require('./mocks/application-json-script-tag');
 
 const {
@@ -15,9 +16,9 @@ const {
 const zooplaUrl = 'https://www.zoopla.co.uk/for-sale/details/47576940';
 
 describe('getListingInfo', () => {
-  test('returns listing info', () => {
+  test('returns listing info with key features', () => {
     expect(
-      getListingInfo(APPLICATION_JSON_SCRIPT_TAG, KEY_FEATURES_)
+      getListingInfo(APPLICATION_JSON_SCRIPT_TAG, KEY_FEATURES_PROPERTY_HTML)
     ).toMatchObject({
       images: [
         '1-197dc390bc20c1f7a5c1135232f0afe36c7a17a5.png',
@@ -44,6 +45,16 @@ describe('getListingInfo', () => {
         'Loft conversion and side return extension',
         'Additional cellar space'
       ]
+    });
+  });
+  test('returns listing info without key features', () => {
+    expect(
+      getListingInfo(APPLICATION_JSON_SCRIPT_TAG, DEFAULT_PROPERTY_HTML)
+    ).toMatchObject({
+      price: '£385,000',
+      description:
+        'A very desirable second floor flat situated in a period conversion. This property is the perfect investment for a first-time buyer consisting of bedroom, bathroom, reception room, kitchen.Conveniently located within walking distance to local shops, restaurants and bars, it is furthermore walking distance from Hamstead Heath and Tuffnell Park station.',
+      keyFeatures: []
     });
   });
 });
