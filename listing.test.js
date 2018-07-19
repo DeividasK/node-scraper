@@ -5,7 +5,8 @@ const {
   getBedrooms,
   getGeoCoordinates,
   getListingId,
-  getListingInfo
+  getListingInfo,
+  getPropertyType
 } = require('./listing');
 
 const zooplaUrl = 'https://www.zoopla.co.uk/for-sale/details/47576940';
@@ -24,7 +25,9 @@ describe('getListingInfo', () => {
         lng: 0.026893,
         outcode: 'SE7',
         street: 'Victoria Way'
-      }
+      },
+      bedrooms: 4,
+      propertyType: 'TERRACED'
     });
   });
 });
@@ -57,5 +60,11 @@ describe('getAddress', () => {
 describe('getBedrooms', () => {
   test('returns bedrooms', () => {
     expect(getBedrooms(APPLICATION_JSON_SCRIPT_TAG)).toBe(4);
+  });
+});
+
+describe('getPropertyType', () => {
+  test('returns property type', () => {
+    expect(getPropertyType(APPLICATION_JSON_SCRIPT_TAG)).toBe('TERRACED');
   });
 });

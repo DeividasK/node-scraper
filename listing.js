@@ -30,6 +30,20 @@ function getBedrooms(applicationJsonScriptTag) {
   return parseInt(bedrooms);
 }
 
+function getPropertyType(applicationJsonScriptTag) {
+  const residenceNameField = applicationJsonScriptTag
+    .replace(/\r?\n|\r/g, '')
+    .match(/"@type": "Residence",(.*)"name": "(.*)",(.*)"description"/gim)[0]
+    .replace(/"description"/, '')
+    .match(/"name": "(.*)"/)[1];
+
+  if (/terraced/.test(residenceNameField)) {
+    return 'TERRACED';
+  }
+
+  return null;
+}
+
 function getGeoCoordinates(applicationJsonScriptTag) {
   const lat = applicationJsonScriptTag
     .match(/"latitude": "(.+)"/gi)[0]
@@ -55,7 +69,9 @@ function getListingInfo(applicationJsonScriptTag) {
     address: {
       ...getAddress(applicationJsonScriptTag),
       ...getGeoCoordinates(applicationJsonScriptTag)
-    }
+    },
+    bedrooms: getBedrooms(applicationJsonScriptTag),
+    propertyType: getPropertyType(applicationJsonScriptTag)
   };
 }
 
@@ -64,5 +80,6 @@ module.exports = {
   getBedrooms,
   getGeoCoordinates,
   getListingId,
-  getListingInfo
+  getListingInfo,
+  getPropertyType
 };
