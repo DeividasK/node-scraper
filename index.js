@@ -21,7 +21,10 @@ async function getListings(listingsUrls) {
       return { ...acc, [listingId]: { externalId: listingId, ...listingInfo } };
     }, {});
 
-    console.log(`listings`, listings);
+    fs.writeFileSync(
+      path.resolve(LISTINGS_DIRECTORY, 'listings.json'),
+      JSON.stringify(listings)
+    );
   } catch (error) {
     console.log(`error`, error);
   }
@@ -41,8 +44,9 @@ async function getListing(url) {
     }
 
     const response = await fetch(url);
+    const html = await response.text();
 
-    const $ = cheerio.load(await response.text());
+    const $ = cheerio.load(html);
 
     let applicationJsonScriptTag = $('script[type="application/ld+json"]')
       .contents()
