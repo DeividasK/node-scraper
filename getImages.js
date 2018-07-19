@@ -6,6 +6,9 @@ const cheerio = require('cheerio');
 async function downloadFloorPlan(html, { directory, listingId }) {
   const floorPlan = getFloorPlanName(html);
 
+  if (!floorPlan.url) {
+    return Promise.resolve();
+  }
   return fetch(floorPlan.url).then(res => {
     return new Promise((resolve, reject) => {
       const imagePath = path.resolve(directory, listingId, floorPlan.name);
@@ -86,10 +89,14 @@ function getFloorPlanName(html) {
     .replace(/background-image: url\('/, '')
     .replace("')", '');
 
-  const urlParts = floorPlanUrl.split('.');
-  const imageExtension = urlParts[urlParts.length - 1];
+  if (floorPlanUrl.includes('png') || floorPlanUrl.includes('jpg')) {
+    const urlParts = floorPlanUrl.split('.');
+    const imageExtension = urlParts[urlParts.length - 1];
 
-  return { url: floorPlanUrl, name: `floor-plan.${imageExtension}` };
+    return { url: floorPlanUrl, name: `floor-plan.${imageExtension}` };
+  } else {
+    return {};
+  }
 }
 
 function getImageNames(applicationJsonScriptTag) {
