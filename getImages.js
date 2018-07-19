@@ -1,6 +1,40 @@
 const fs = require('fs');
 const fetch = require('node-fetch');
 const path = require('path');
+const cheerio = require('cheerio');
+
+async function downloadFloorPlan(html, { directory, listingId }) {
+  const floorPlan = getFloorPlanName(html);
+
+  return fetch(floorPlan.url).then(res => {
+    return new Promise((resolve, reject) => {
+      const imagePath = path.resolve(directory, listingId, floorPlan.name);
+
+      const dest = fs.createWriteStream(imagePath);
+
+      res.body.pipe(dest);
+      res.body.on('error', err => {
+        reject(err);
+      });
+      dest.on('finish', () => {
+        console.log(
+          `Finished downloading ${
+            floorPlan.name
+          } floor plan for listing ${listingId}.`
+        );
+        resolve();
+      });
+      dest.on('error', err => {
+        console.log(
+          `Error when downloading ${
+            floorPlan.name
+          } floor plan for listing ${listingId}.`
+        );
+        reject(err);
+      });
+    });
+  });
+}
 
 async function downloadImages(
   applicationJsonScriptTag,
@@ -41,6 +75,23 @@ async function downloadImages(
 
   return Promise.all(imagePromises);
 }
+
+function getFloorPlanName(html) {
+  const $ = cheerio.load(html);
+
+  const floorPlanUrl = $(
+    '.ui-modal-gallery__asset.ui-modal-gallery__asset--center-content'
+  )
+    .attr('style')
+    .replace(/background-image: url\('/, '')
+    .replace("')", '');
+
+  const urlParts = floorPlanUrl.split('.');
+  const imageExtension = urlParts[urlParts.length - 1];
+
+  return { url: floorPlanUrl, name: `floor-plan.${imageExtension}` };
+}
+
 function getImageNames(applicationJsonScriptTag) {
   return getImages(applicationJsonScriptTag).map(imageObject => {
     return imageObject.name;
@@ -70,7 +121,9 @@ function getImages(applicationJsonScriptTag) {
 }
 
 module.exports = {
+  downloadFloorPlan,
   downloadImages,
+  getFloorPlanName,
   getImageNames,
   getImageUrls,
   getImages

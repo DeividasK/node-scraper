@@ -48,14 +48,15 @@ describe('getListingInfo', () => {
       status: null
     });
   });
-  test('returns listing info without key features', () => {
+  it('returns listing info without key features', () => {
     expect(
       getListingInfo(APPLICATION_JSON_SCRIPT_TAG, DEFAULT_PROPERTY_HTML)
     ).toMatchObject({
       price: '£385,000',
       description:
         'A very desirable second floor flat situated in a period conversion. This property is the perfect investment for a first-time buyer consisting of bedroom, bathroom, reception room, kitchen.Conveniently located within walking distance to local shops, restaurants and bars, it is furthermore walking distance from Hamstead Heath and Tuffnell Park station.',
-      keyFeatures: []
+      keyFeatures: [],
+      floorPlanImageUrl: 'floor-plan.png'
     });
   });
 });

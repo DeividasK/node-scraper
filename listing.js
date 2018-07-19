@@ -1,6 +1,6 @@
 const cheerio = require('cheerio');
 
-const { getImageNames } = require('./getImages');
+const { getFloorPlanName, getImageNames } = require('./getImages');
 
 function getAddress(applicationJsonScriptTag) {
   const address = applicationJsonScriptTag
@@ -63,10 +63,6 @@ function getListingId(url) {
   return regExp.exec(url)[1];
 }
 
-function getPropertyPrice(html) {
-  const $ = cheerio.load(html);
-}
-
 function getListingInfo(applicationJsonScriptTag, html) {
   const $ = cheerio.load(html);
 
@@ -100,7 +96,8 @@ function getListingInfo(applicationJsonScriptTag, html) {
     price,
     description,
     keyFeatures,
-    status: null
+    status: null,
+    floorPlanImageUrl: getFloorPlanName(html).name
   };
 }
 
