@@ -44,7 +44,8 @@ describe('getListingInfo', () => {
         'Extensively refurbished',
         'Loft conversion and side return extension',
         'Additional cellar space'
-      ]
+      ],
+      status: null
     });
   });
   test('returns listing info without key features', () => {

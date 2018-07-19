@@ -99,7 +99,8 @@ function getListingInfo(applicationJsonScriptTag, html) {
     propertyType: getPropertyType(residenceNameField),
     price,
     description,
-    keyFeatures
+    keyFeatures,
+    status: null
   };
 }
 
