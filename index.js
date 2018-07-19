@@ -46,6 +46,8 @@ async function getListing(url) {
     const response = await fetch(url);
     const html = await response.text();
 
+    fs.writeFileSync('./text.txt', html);
+
     const $ = cheerio.load(html);
 
     let applicationJsonScriptTag = $('script[type="application/ld+json"]')
@@ -67,7 +69,8 @@ async function getListing(url) {
 }
 
 getListings([
-  'https://www.zoopla.co.uk/for-sale/details/47910606'
+  'https://www.zoopla.co.uk/for-sale/details/47576940' // mock
+  // 'https://www.zoopla.co.uk/for-sale/details/47910606'
   // 'https://www.zoopla.co.uk/for-sale/details/47614577',
   // 'https://www.zoopla.co.uk/for-sale/details/48141019',
   // 'https://www.zoopla.co.uk/for-sale/details/45397791',

@@ -83,6 +83,12 @@ function getListingInfo(applicationJsonScriptTag, html) {
     .text()
     .trim();
 
+  const keyFeatures = $('.dp-features__list.ui-list-bullets li')
+    .map((index, child) => {
+      return $(child).text();
+    })
+    .toArray();
+
   return {
     images: getImageNames(applicationJsonScriptTag),
     address: {
@@ -92,7 +98,8 @@ function getListingInfo(applicationJsonScriptTag, html) {
     bedrooms: getBedrooms(applicationJsonScriptTag),
     propertyType: getPropertyType(residenceNameField),
     price,
-    description
+    description,
+    keyFeatures
   };
 }
 
