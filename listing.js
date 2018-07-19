@@ -18,6 +18,18 @@ function getAddress(applicationJsonScriptTag) {
   return { borough, outcode, street };
 }
 
+function getBedrooms(applicationJsonScriptTag) {
+  const residenceNameField = applicationJsonScriptTag
+    .replace(/\r?\n|\r/g, '')
+    .match(/"@type": "Residence",(.*)"name": "(.*)",(.*)"description"/gim)[0]
+    .replace(/"description"/, '')
+    .match(/"name": "(.*)"/)[1];
+
+  const bedrooms = residenceNameField.match(/\d/)[0];
+
+  return parseInt(bedrooms);
+}
+
 function getGeoCoordinates(applicationJsonScriptTag) {
   const lat = applicationJsonScriptTag
     .match(/"latitude": "(.+)"/gi)[0]
@@ -49,6 +61,7 @@ function getListingInfo(applicationJsonScriptTag) {
 
 module.exports = {
   getAddress,
+  getBedrooms,
   getGeoCoordinates,
   getListingId,
   getListingInfo

@@ -2,6 +2,7 @@ const APPLICATION_JSON_SCRIPT_TAG = require('./mocks/application-json-script-tag
 
 const {
   getAddress,
+  getBedrooms,
   getGeoCoordinates,
   getListingId,
   getListingInfo
@@ -50,5 +51,11 @@ describe('getAddress', () => {
       borough: 'Charlton',
       outcode: 'SE7'
     });
+  });
+});
+
+describe('getBedrooms', () => {
+  test('returns bedrooms', () => {
+    expect(getBedrooms(APPLICATION_JSON_SCRIPT_TAG)).toBe(4);
   });
 });
