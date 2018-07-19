@@ -1,3 +1,5 @@
+const cheerio = require('cheerio');
+
 const { getImageNames } = require('./getImages');
 
 function getAddress(applicationJsonScriptTag) {
@@ -63,7 +65,20 @@ function getListingId(url) {
   return regExp.exec(url)[1];
 }
 
-function getListingInfo(applicationJsonScriptTag) {
+function getPropertyPrice(html) {
+  const $ = cheerio.load(html);
+}
+
+function getListingInfo(applicationJsonScriptTag, html) {
+  const $ = cheerio.load(html);
+
+  const description = $('.dp-description__text')
+    .text()
+    .trim();
+  const price = $('.dp-sidebar-wrapper .ui-pricing__main-price')
+    .text()
+    .trim();
+
   return {
     images: getImageNames(applicationJsonScriptTag),
     address: {
@@ -71,7 +86,9 @@ function getListingInfo(applicationJsonScriptTag) {
       ...getGeoCoordinates(applicationJsonScriptTag)
     },
     bedrooms: getBedrooms(applicationJsonScriptTag),
-    propertyType: getPropertyType(applicationJsonScriptTag)
+    propertyType: getPropertyType(applicationJsonScriptTag),
+    price,
+    description
   };
 }
 

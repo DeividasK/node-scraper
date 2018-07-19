@@ -57,7 +57,10 @@ async function getListing(url) {
       listingId
     });
 
-    return { listingId, listingInfo: getListingInfo(applicationJsonScriptTag) };
+    return {
+      listingId,
+      listingInfo: getListingInfo(applicationJsonScriptTag, html)
+    };
   } catch (error) {
     console.log(error);
   }

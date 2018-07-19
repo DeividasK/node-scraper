@@ -1,11 +1,14 @@
+const HTML = require('./mocks/zoopla-property-page.js');
 const APPLICATION_JSON_SCRIPT_TAG = require('./mocks/application-json-script-tag');
 
 const {
   getAddress,
   getBedrooms,
+  getDescription,
   getGeoCoordinates,
   getListingId,
   getListingInfo,
+  getPropertyPrice,
   getPropertyType
 } = require('./listing');
 
@@ -13,7 +16,7 @@ const zooplaUrl = 'https://www.zoopla.co.uk/for-sale/details/47576940';
 
 describe('getListingInfo', () => {
   test('returns listing info', () => {
-    expect(getListingInfo(APPLICATION_JSON_SCRIPT_TAG)).toMatchObject({
+    expect(getListingInfo(APPLICATION_JSON_SCRIPT_TAG, HTML)).toMatchObject({
       images: [
         '1-197dc390bc20c1f7a5c1135232f0afe36c7a17a5.png',
         '2-fcaa36eac303ea19f74c93e3eaa2f3f0d105bafc.png',
@@ -27,7 +30,10 @@ describe('getListingInfo', () => {
         street: 'Victoria Way'
       },
       bedrooms: 4,
-      propertyType: 'TERRACED'
+      propertyType: 'TERRACED',
+      price: '£385,000',
+      description:
+        'A very desirable second floor flat situated in a period conversion. This property is the perfect investment for a first-time buyer consisting of bedroom, bathroom, reception room, kitchen.Conveniently located within walking distance to local shops, restaurants and bars, it is furthermore walking distance from Hamstead Heath and Tuffnell Park station.'
     });
   });
 });
