@@ -32,15 +32,13 @@ function getBedrooms(applicationJsonScriptTag) {
   return parseInt(bedrooms);
 }
 
-function getPropertyType(applicationJsonScriptTag) {
-  const residenceNameField = applicationJsonScriptTag
-    .replace(/\r?\n|\r/g, '')
-    .match(/"@type": "Residence",(.*)"name": "(.*)",(.*)"description"/gim)[0]
-    .replace(/"description"/, '')
-    .match(/"name": "(.*)"/)[1];
-
+function getPropertyType(residenceNameField) {
   if (/terraced/.test(residenceNameField)) {
     return 'TERRACED';
+  }
+
+  if (/flat/.test(residenceNameField)) {
+    return 'FLAT';
   }
 
   return null;
@@ -72,6 +70,12 @@ function getPropertyPrice(html) {
 function getListingInfo(applicationJsonScriptTag, html) {
   const $ = cheerio.load(html);
 
+  const residenceNameField = applicationJsonScriptTag
+    .replace(/\r?\n|\r/g, '')
+    .match(/"@type": "Residence",(.*)"name": "(.*)",(.*)"description"/gim)[0]
+    .replace(/"description"/, '')
+    .match(/"name": "(.*)"/)[1];
+
   const description = $('.dp-description__text')
     .text()
     .trim();
@@ -86,7 +90,7 @@ function getListingInfo(applicationJsonScriptTag, html) {
       ...getGeoCoordinates(applicationJsonScriptTag)
     },
     bedrooms: getBedrooms(applicationJsonScriptTag),
-    propertyType: getPropertyType(applicationJsonScriptTag),
+    propertyType: getPropertyType(residenceNameField),
     price,
     description
   };

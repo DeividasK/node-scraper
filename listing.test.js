@@ -71,6 +71,7 @@ describe('getBedrooms', () => {
 
 describe('getPropertyType', () => {
   test('returns property type', () => {
-    expect(getPropertyType(APPLICATION_JSON_SCRIPT_TAG)).toBe('TERRACED');
+    expect(getPropertyType('4 bed terraced house for sale')).toBe('TERRACED');
+    expect(getPropertyType('1 bed flat for sale')).toBe('FLAT');
   });
 });
